@@ -1,0 +1,1 @@
+valgrind --leak-check=full --track-origins=yes ./vliwScheduler $1 $2 $3
