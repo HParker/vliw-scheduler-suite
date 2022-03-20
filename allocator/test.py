@@ -140,7 +140,7 @@ def test_three_variables():
     expected_ig = ['x1 -- y1', 'x1 -- z1', 'y1 -- z1']
     test_ig(expected_ig, allocator)
 
-    expected_colors = {'x1': '2', 'y1': '1', 'z1': '3'}
+    expected_colors = {'z1': '3', 'y1': '2', 'x1': '1'}
     test_colored_graph(expected_colors, allocator)
 
 # Simple sanity check. if this is failing, fix it first.
@@ -595,7 +595,7 @@ def ig_partial_overlap():
     expected_ig = ['x1 -- y1', 'y1 -- z1'] 
     test_ig(expected_ig, allocator)
 
-    expected_colors = {'x1': '2', 'y1': '1', 'z1': '2'} # x and Z share since they don't overlap!
+    expected_colors = {'z1': '1', 'y1': '2', 'x1': '1'} # x and Z share since they don't overlap!
     test_colored_graph(expected_colors, allocator)
 
 
@@ -641,7 +641,7 @@ def spills_first_if_usage_ties():
     expected_ig = ['w1 -- x1', 'w1 -- y1', 'w1 -- z1', 'x1 -- y1', 'x1 -- z1', 'y1 -- z1']
     test_ig(expected_ig, allocator)
 
-    expected_colors = {'w1': 'spill', 'x1': '3', 'y1': '2', 'z1': '1'}
+    expected_colors = {'z1': 'spill', 'y1': '3', 'x1': '2', 'w1': '1'}
     test_colored_graph(expected_colors, allocator)
 
 def spills_least_defs():
@@ -668,7 +668,7 @@ def spills_least_defs():
     expected_ig = ['w1 -- x1', 'w1 -- y1', 'w1 -- z1', 'x1 -- y1', 'x1 -- z1', 'y1 -- z1']
     test_ig(expected_ig, allocator)
 
-    expected_colors = {'w1': '3', 'x1': '2', 'y1': '1', 'z1': 'spill'}
+    expected_colors = {'z1': 'spill', 'y1': '3', 'x1': '2', 'w1': '1'}
     test_colored_graph(expected_colors, allocator)
 
 def spills_least_uses():
@@ -698,7 +698,7 @@ def spills_least_uses():
     expected_ig = ['w1 -- x1', 'w1 -- y1', 'w1 -- z1', 'x1 -- y1', 'x1 -- z1', 'y1 -- z1']
     test_ig(expected_ig, allocator)
 
-    expected_colors = {'w1': '3', 'x1': '2', 'y1': 'spill', 'z1': '1'}
+    expected_colors = {'z1': '3', 'y1': 'spill', 'x1': '2', 'w1': '1'}
     test_colored_graph(expected_colors, allocator)
 
 print("three variables.")
