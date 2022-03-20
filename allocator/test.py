@@ -131,7 +131,7 @@ def test_three_variables():
     expected_live_in = [[], [], ['x'], ['x', 'y'], ['x', 'y', 'z'], ['y', 'z'], [], [], []]
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], ['x'], ['x', 'y'], ['x', 'y', 'z'], ['x', 'y', 'z'], ['y', 'z'], [], [], []]
+    expected_live_out = [[], ['x'], ['x', 'y'], ['x', 'y', 'z'], ['y', 'z'], [], [], [], []] 
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['1', '2', '3', '4'], 'y1': ['2', '3', '4', '5'], 'z1': ['3', '4', '5']}
@@ -173,7 +173,7 @@ def only_fallthrough_usage():
     expected_live_in = [[], [], ['x'], ['x'], [], [], []] 
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], ['x'], ['x'], ['x'], [], [], []] 
+    expected_live_out = [[], ['x'], ['x'], [], [], [], []]
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['1', '2', '3']}
@@ -214,7 +214,7 @@ def only_branch_usage():
     expected_live_in = [[], [], ['x'], [], [], ['x'], []]
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], ['x'], ['x'], [], [], ['x'], []]
+    expected_live_out = [[], ['x'], ['x'], [], [], [], []] 
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['1', '2', '5']} 
@@ -267,7 +267,7 @@ def test_unused_diamond_sides():
     expected_live_in = [[], [], ['x'], ['x', 'y'], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], [], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], [], ['x', 'y', 'z'], ['x', 'y'], ['x'], []]
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], ['x'], ['x', 'y'], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], [], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], [], ['x', 'y', 'z'], ['x', 'y'], ['x'], []]
+    expected_live_out = [[], ['x'], ['x', 'y'], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], [], ['x', 'y', 'z'], ['x', 'y', 'z'], ['x', 'y', 'z'], [], ['x', 'y'], ['x'], [], []]
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['1', '2', '3', '4', '9', '10', '11', '13', '14', '15'], 'y1': ['2', '3', '4', '9', '10', '11', '13', '14'], 'z1': ['3', '4', '9', '10', '11', '13']}
@@ -312,10 +312,10 @@ def non_overlapping_left_and_right():
     expected_uses = [[], [], ['x'], [], [], [], ['x'], [], [], ['x'], []] 
     test_uses(expected_uses, allocator)
 
-    expected_live_in = [[], [], ['x'], [], [], [], [], [], [], [], []] 
+    expected_live_in = [[], [], ['x'], [], ['x'], [], ['x'], [], [], ['x'], []] 
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], ['x'], ['x'], [], [], [], ['x'], [], [], ['x'], []] 
+    expected_live_out = [[], ['x'], ['x'], ['x'], ['x'], [], [], [], [], [], []] 
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['1', '2', '6'], 'x2': ['3', '4', '9']}
@@ -335,8 +335,8 @@ def loop_extra_liveness():
         "assign, x, 10.0,",
         "assign, w, 3.0,",
         "Loop:",
-        "assign, p, 2.0,", # TODO: w should be live here
-        "assign, p, 2.0,", # TODO: w should be live here
+        "assign, p, 2.0,",
+        "assign, p, 2.0,",
         "add, w, w, x,",
         "assign, p, 2.0,", 
         "assign, p, 2.0,", 
@@ -359,10 +359,10 @@ def loop_extra_liveness():
     expected_uses = [[], [], [], [], [], [], ['w', 'x'], [], [], ['w'], []] 
     test_uses(expected_uses, allocator)
 
-    expected_live_in = [[], [], ['x'], [], ['x'], ['x'], ['x'], ['w', 'x'], ['w', 'x'], ['w', 'x'], []] 
+    expected_live_in = [[], [], ['x'], [], ['w', 'x'], ['w', 'x'], ['w', 'x'], ['w', 'x'], ['w', 'x'], ['w', 'x'], []]
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], ['x'], ['x'], [], ['x'], ['x'], ['w', 'x'], ['w', 'x'], ['w', 'x'], ['w', 'x'], []] 
+    expected_live_out = [[], ['x'], ['w', 'x'], [], ['w', 'x'], ['w', 'x'], ['w', 'x'], ['w', 'x'], ['w', 'x'], ['w', 'x'], []]
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['1', '2', '4', '5', '6'], 'w1': ['2', '4', '5', '6', '7', '8', '9']} 
@@ -412,7 +412,7 @@ def unreachable_uses():
     expected_live_in = [[], [], ['x'], ['x'], ['x'], [], [], [], [], [], ['x'], []] 
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], ['x'], ['x'], ['x'], ['x'], [], [], [], [], [], ['x'], []] 
+    expected_live_out = [[], ['x'], ['x'], ['x'], ['x'], [], [], [], [], [], [], []]
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['1', '2', '3', '4', '10']} 
@@ -451,10 +451,10 @@ def jump_fallthrough_match():
     expected_uses = [[], [], [], [], ['x'], ['x'], []] 
     test_uses(expected_uses, allocator)
 
-    expected_live_in = [[], [], [], [], [], ['x'], []]
+    expected_live_in = [[], [], ['x'], [], ['x'], ['x'], []] 
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], [], [], [], ['x'], ['x'], []]
+    expected_live_out = [[], ['x'], ['x'], [], ['x'], ['x'], []]
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['1', '2', '4', '5']}
@@ -496,7 +496,7 @@ def only_used_after_redefinition():
     expected_live_in = [[], [], [], [], ['x'], ['x'], ['x'], []]
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], [], [], ['x'], ['x'], ['x'], ['x'], []] 
+    expected_live_out = [[], [], [], ['x'], ['x'], ['x'], [], []]
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['3', '4', '5', '6']} 
@@ -544,7 +544,7 @@ def only_used_after_redefinition_jumps():
     expected_live_in = [[], [], [], [], ['x'], ['x'], ['x'], ['x'], [], ['x'], ['x'], ['x'], []] 
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], [], [], ['x'], ['x'], ['x'], ['x'], ['x'], [], ['x'], ['x'], ['x'], []] 
+    expected_live_out = [[], [], [], ['x'], ['x'], ['x'], ['x'], ['x'], [], ['x'], ['x'], [], []] 
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['3', '4', '9', '10', '11']} 
@@ -586,7 +586,7 @@ def ig_partial_overlap():
     expected_live_in = [[], [], ['x'], ['x', 'y'], ['y'], ['y', 'z'], ['z'], []]
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], ['x'], ['x', 'y'], ['x', 'y'], ['y', 'z'], ['y', 'z'], ['z'], []] 
+    expected_live_out = [[], ['x'], ['x', 'y'], ['y'], ['y', 'z'], ['z'], [], []] 
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'x1': ['1', '2', '3'], 'y1': ['2', '3', '4', '5'], 'z1': ['4', '5', '6']} 
@@ -632,7 +632,7 @@ def spills_first_if_usage_ties():
     expected_live_in = [[], [], ['w'], ['w', 'x'], ['w', 'x', 'y'], ['w', 'x', 'y', 'z'], ['x', 'y', 'z'], ['y', 'z'], ['z'], []]
     test_livein(expected_live_in, allocator)
     
-    expected_live_out = [[], ['w'], ['w', 'x'], ['w', 'x', 'y'], ['w', 'x', 'y', 'z'], ['w', 'x', 'y', 'z'], ['x', 'y', 'z'], ['y', 'z'], ['z'], []] 
+    expected_live_out = [[], ['w'], ['w', 'x'], ['w', 'x', 'y'], ['w', 'x', 'y', 'z'], ['x', 'y', 'z'], ['y', 'z'], ['z'], [], []] 
     test_liveout(expected_live_out, allocator)
     
     expected_web = {'w1': ['1', '2', '3', '4', '5'], 'x1': ['2', '3', '4', '5', '6'], 'y1': ['3', '4', '5', '6', '7'], 'z1': ['4', '5', '6', '7', '8']}
