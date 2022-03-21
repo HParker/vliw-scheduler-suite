@@ -306,7 +306,7 @@ def non_overlapping_left_and_right():
     expected_cfg = ['1 -> 2', '1 -> 3', '2 -> 4'] 
     test_cfg(expected_cfg, allocator)
 
-    expected_defs = ['', 'x', '', 'x', '', '', 'x', '', '', 'x', '']
+    expected_defs = ['', 'x', '', 'x', '', '', '', '', '', '', '']
     test_defs(expected_defs, allocator)
 
     expected_uses = [[], [], ['x'], [], [], [], ['x'], [], [], ['x'], []] 
